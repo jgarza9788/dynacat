@@ -548,9 +548,6 @@ Assign a keyboard shortcut to navigate to this page. Pressing the configured key
 The shortcut is only active when:
 - The current page has its navigation visible (i.e., `hide-desktop-navigation` is not `true`)
 - The target page is not hidden from the navigation menu (i.e., `hide-from-navigation` is not `true`)
-- Focus is not inside a text input, textarea, or select element
-
-A visual hint badge is shown on each nav link that has a keybind configured. The badge glows when you start typing a matching prefix.
 
 ##### Key binding syntax
 
