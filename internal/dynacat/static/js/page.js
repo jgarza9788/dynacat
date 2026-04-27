@@ -534,6 +534,8 @@ function setupDynamicRelativeTime() {
     });
 }
 
+const _initializedGroupHeaders = new WeakSet();
+
 function setupGroups() {
     const groups = document.getElementsByClassName("widget-type-group");
 
@@ -544,10 +546,11 @@ function setupGroups() {
     for (let g = 0; g < groups.length; g++) {
         const group = groups[g];
 
-        if (group.dataset.initialized) continue;
-        group.dataset.initialized = "true";
+        const headerEl = group.getElementsByClassName("widget-header")[0];
+        if (!headerEl || _initializedGroupHeaders.has(headerEl)) continue;
+        _initializedGroupHeaders.add(headerEl);
 
-        const titles = group.getElementsByClassName("widget-header")[0].children;
+        const titles = headerEl.children;
         const tabs = group.getElementsByClassName("widget-group-contents")[0].children;
         let current = 0;
 
