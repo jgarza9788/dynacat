@@ -95,10 +95,11 @@ func (widget *marketsWidget) Render() template.HTML {
 }
 
 type marketRequest struct {
-	CustomName string `yaml:"name"`
-	Symbol     string `yaml:"symbol"`
-	ChartLink  string `yaml:"chart-link"`
-	SymbolLink string `yaml:"symbol-link"`
+	CustomName   string `yaml:"name"`
+	Symbol       string `yaml:"symbol"`
+	ChartLink    string `yaml:"chart-link"`
+	SymbolLink   string `yaml:"symbol-link"`
+	InvertColors bool   `yaml:"invert-colors"`
 }
 
 type market struct {
