@@ -172,6 +172,7 @@ type widgetBase struct {
 	CustomCacheDuration durationField        `yaml:"cache"`
 	UpdateInterval      *updateIntervalField `yaml:"update-interval"`
 	ContentAvailable    bool                 `yaml:"-"`
+	LazyLoad            bool                 `yaml:"lazy-load"`
 	WIP                 bool                 `yaml:"-"`
 	Error               error                `yaml:"-"`
 	Notice              error                `yaml:"-"`
@@ -229,6 +230,10 @@ func (w *widgetBase) requiresUpdate(now *time.Time) bool {
 	}
 
 	if w.nextUpdate.IsZero() {
+		// Lazy widgets skip the initial blocking fetch; JS triggers it after page load
+		if w.LazyLoad {
+			return false
+		}
 		return true
 	}
 
@@ -237,6 +242,10 @@ func (w *widgetBase) requiresUpdate(now *time.Time) bool {
 
 func (w *widgetBase) IsWIP() bool {
 	return w.WIP
+}
+
+func (w *widgetBase) IsLazyLoad() bool {
+	return w.LazyLoad && !w.ContentAvailable
 }
 
 func (w *widgetBase) update(ctx context.Context) {

@@ -1993,7 +1993,14 @@ window.addEventListener('beforeunload', _closeSSE);
 
 window.dynacatSetupPopovers = setupPopovers;
 
+function fetchLazyWidgets() {
+    document.querySelectorAll('.widget[data-lazy-load]').forEach(widget => {
+        updateWidget(widget);
+    });
+}
+
 setupPage().then(() => {
     startPolling();
     setupWidgetPolling();
+    fetchLazyWidgets();
 });
