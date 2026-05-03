@@ -269,8 +269,8 @@ func (widget *latestMediaWidget) fetchPlexLatest(ctx context.Context, host *late
 	var items []latestMediaItem
 
 	for _, section := range sectionsResp.MediaContainer.Directory {
-		// Skip Plex music libraries so latest-media only shows video library additions.
-		if strings.EqualFold(section.Type, "artist") {
+		// Skip non-video Plex libraries so latest-media only shows video additions.
+		if strings.EqualFold(section.Type, "artist") || strings.EqualFold(section.Type, "photo") {
 			continue
 		}
 
@@ -296,6 +296,11 @@ func (widget *latestMediaWidget) fetchPlexLatest(ctx context.Context, host *late
 		}
 
 		for _, meta := range resp.MediaContainer.Metadata {
+			// Hard filter out Plex photo items, regardless of library filtering config.
+			if strings.EqualFold(meta.Type, "photo") || strings.EqualFold(meta.Type, "photoalbum") {
+				continue
+			}
+
 			item := latestMediaItem{
 				ServerType: "plex",
 				ServerURL:  host.BaseURL,
