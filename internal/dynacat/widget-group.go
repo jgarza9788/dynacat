@@ -12,6 +12,7 @@ var groupWidgetTemplate = mustParseTemplate("group.html", "widget-base.html")
 type groupWidget struct {
 	widgetBase          `yaml:",inline"`
 	containerWidgetBase `yaml:",inline"`
+	Frameless           bool `yaml:"frameless"`
 }
 
 func (widget *groupWidget) initialize() error {

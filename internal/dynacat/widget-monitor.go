@@ -17,6 +17,7 @@ var (
 
 type monitorWidget struct {
 	widgetBase `yaml:",inline"`
+	Frameless  bool   `yaml:"frameless"`
 	Sites      []struct {
 		*SiteStatusRequest `yaml:",inline"`
 		Status             *siteStatus     `yaml:"-"`
