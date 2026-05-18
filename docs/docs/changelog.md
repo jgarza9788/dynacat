@@ -6,6 +6,7 @@
 - Added diffrent header support for monitor widget
 - Fixed issue where `Currently Playing` widget grabbed incorrect cover for shows
 - Fixed issue where qBittorrent would incorrectly detect current state when seeding 
+- Fixed issue where page doesnt load correctly on browser reload
 
 # Changes for 2.2.3
 - Add utility functions for array manipulation -> https://github.com/Panonim/dynacat/pull/60
