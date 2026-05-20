@@ -107,7 +107,7 @@ let keybindState = { pressedKeys: [], chordTimeout: null };
 function normalizedEventKey(event) {
     const key = event.key.toLowerCase();
     if (/^[a-z0-9]$/.test(key)) return key;
-    // Use physical keys so English binds still work on layouts like Russian.
+    // Use physical key codes so existing binds still work on non-English keyboard layouts
     if (/^Key[A-Z]$/.test(event.code)) return event.code.slice(3).toLowerCase();
     if (/^Digit[0-9]$/.test(event.code)) return event.code.slice(5);
     return "";
