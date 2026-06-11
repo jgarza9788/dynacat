@@ -181,6 +181,10 @@
         cursor: text;
     }
 
+    .todo-item {
+        transition: background-color .2s;
+    }
+
     .todo-item:hover {
         background-color: var(--color-widget-background-highlight);
         border-radius: 0.7rem;
