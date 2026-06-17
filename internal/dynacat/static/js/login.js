@@ -118,7 +118,7 @@ if (usernameInput && passwordInput && loginButton) {
             let destination = pageData.baseURL + "/";
             try {
                 const data = await response.json();
-                if (data && typeof data.redirect === "string" && data.redirect.startsWith("/")) {
+                if (data && typeof data.redirect === "string" && data.redirect.startsWith("/") && !data.redirect.startsWith("//")) {
                     destination = data.redirect;
                 }
             } catch (_) { /* no body; fall back to home */ }
