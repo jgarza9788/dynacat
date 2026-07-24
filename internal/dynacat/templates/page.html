@@ -15,6 +15,25 @@
 {{ end }}
 {{ end }}
 
+{{ define "mobile-page-menu" }}
+{{ $root := . }}
+{{ range .AccessiblePages }}
+{{ if not .HideFromNavigation }}
+{{ $page := . }}
+<div class="mobile-page-menu-group">
+    <a href="{{ $root.App.Config.Server.BaseURL }}/{{ $page.Slug }}" class="mobile-page-menu-page-link{{ if eq $page.Slug $root.Page.Slug }} mobile-page-menu-current{{ end }}">{{ if ne "" $page.NameIcon.URL }}{{ if $page.NameIcon.AutoInvert }}<span class="nav-item-icon nav-item-icon-mask" style="--nav-item-icon-url: url('{{ $page.NameIcon.URL }}')"></span>{{ else }}<img class="nav-item-icon" src="{{ $page.NameIcon.URL }}" alt="">{{ end }}{{ end }}{{ $page.Title }}</a>
+    {{ if gt (len $page.Columns) 0 }}
+    <ul class="mobile-page-menu-columns">
+        {{ range $i, $column := $page.Columns }}
+        <li><a href="{{ $root.App.Config.Server.BaseURL }}/{{ $page.Slug }}?column={{ $i }}" class="mobile-page-menu-column-link{{ if and (eq $page.Slug $root.Page.Slug) (eq $i $root.Page.PrimaryColumnIndex) }} mobile-page-menu-column-current{{ end }}" aria-label="Column {{ add $i 1 }}" data-column="{{ $i }}"><span aria-hidden="true">{{ add $i 1 }}</span></a></li>
+        {{ end }}
+    </ul>
+    {{ end }}
+</div>
+{{ end }}
+{{ end }}
+{{ end }}
+
 {{ define "document-body" }}
 <div class="flex flex-column body-content">
     {{ if not .Page.HideDesktopNavigation }}
@@ -84,17 +103,19 @@
     </div>
     {{ end }}
 
+    <label for="mobile-page-menu-toggle" class="mobile-navigation-backdrop" aria-hidden="true"></label>
+
     <div class="mobile-navigation">
         <div class="mobile-navigation-icons">
             <a class="mobile-navigation-label" href="#top">↑</a>
             {{ range $i, $column := .Page.Columns }}
             <label class="mobile-navigation-label"><input type="radio" class="mobile-navigation-input" name="column" value="{{ $i }}" autocomplete="off"{{ if eq $i $.Page.PrimaryColumnIndex }} checked{{ end }}><div class="mobile-navigation-pill"></div></label>
             {{ end }}
-            <label class="mobile-navigation-label"><input type="checkbox" class="mobile-navigation-page-links-input" autocomplete="on"><div class="hamburger-icon"></div></label>
+            <label class="mobile-navigation-label"><input type="checkbox" id="mobile-page-menu-toggle" class="mobile-navigation-page-links-input" autocomplete="on"><div class="hamburger-icon"></div></label>
         </div>
 
         <div class="mobile-navigation-page-links hide-scrollbars">
-            {{ template "navigation-links" . }}
+            {{ template "mobile-page-menu" . }}
         </div>
 
         <div class="mobile-navigation-actions flex flex-column margin-block-10">

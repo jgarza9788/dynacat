@@ -1283,6 +1283,48 @@ function initThemePicker() {
     });
 }
 
+function applyColumnSelectionFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    const column = params.get("column");
+    if (column === null) return;
+
+    const input = document.querySelector(`.mobile-navigation-input[value="${column}"]`);
+    if (input) {
+        input.checked = true;
+    }
+
+    params.delete("column");
+    const newSearch = params.toString();
+    const newURL = window.location.pathname + (newSearch ? `?${newSearch}` : "") + window.location.hash;
+    window.history.replaceState(null, "", newURL);
+}
+
+function syncMobilePageMenuColumnHighlight() {
+    const activeInput = document.querySelector(".mobile-navigation-input:checked");
+    if (!activeInput) return;
+
+    const currentPageLink = document.querySelector(".mobile-page-menu-page-link.mobile-page-menu-current");
+    const group = currentPageLink ? currentPageLink.closest(".mobile-page-menu-group") : null;
+    if (!group) return;
+
+    group.querySelectorAll(".mobile-page-menu-column-link").forEach((link) => {
+        link.classList.toggle("mobile-page-menu-column-current", link.dataset.column === activeInput.value);
+    });
+}
+
+function setupMobilePageMenu() {
+    const toggle = document.getElementById("mobile-page-menu-toggle");
+    if (!toggle) return;
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") toggle.checked = false;
+    });
+
+    document.querySelectorAll(".mobile-navigation-input").forEach((input) => {
+        input.addEventListener("change", syncMobilePageMenuColumnHighlight);
+    });
+}
+
 function initDesktopNavigationAutoshow() {
     const navContainer = document.querySelector(".header-container-navigation-hover");
     if (!navContainer) {
@@ -1333,6 +1375,9 @@ function initDesktopNavigationAutoshow() {
 }
 
 async function setupPage() {
+    applyColumnSelectionFromURL();
+    setupMobilePageMenu();
+    syncMobilePageMenuColumnHighlight();
     initDesktopNavigationAutoshow();
 
     initThemePicker();

@@ -356,7 +356,7 @@ kbd:active {
     visibility: visible;
 }
 
-.mobile-navigation, .mobile-reachability-header {
+.mobile-navigation, .mobile-reachability-header, .mobile-navigation-backdrop {
     display: none;
 }
 
