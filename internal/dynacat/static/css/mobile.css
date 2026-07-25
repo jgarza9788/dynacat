@@ -125,11 +125,18 @@
     }
 
     .mobile-page-menu-columns > li {
-        flex: 1;
         display: flex;
         justify-content: stretch;
         margin: 0;
         padding: 0;
+    }
+
+    .mobile-page-menu-columns > li.mobile-page-menu-column-small {
+        flex: 1;
+    }
+
+    .mobile-page-menu-columns > li.mobile-page-menu-column-full {
+        flex: 2;
     }
 
     .mobile-page-menu-column-link {
