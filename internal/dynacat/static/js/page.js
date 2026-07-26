@@ -1079,6 +1079,9 @@ function setupClocks() {
         const clock = clocks[i];
         const hourFormat = clock.dataset.hourFormat;
         const localTimeContainer = clock.querySelector('[data-local-time]');
+        if (!localTimeContainer) {
+            continue;
+        }
         const localDateElement = localTimeContainer.querySelector('[data-date]');
         const localWeekdayElement = localTimeContainer.querySelector('[data-weekday]');
         const localYearElement = localTimeContainer.querySelector('[data-year]');
@@ -1417,23 +1420,31 @@ async function setupPage() {
 
     pageContentElement.innerHTML = pageContent;
 
+    const safeSetup = async (name, fn) => {
+        try {
+            return await fn();
+        } catch (err) {
+            console.error(`[dynacat] ${name} failed during page setup:`, err);
+        }
+    };
+
     try {
-        setupPopovers();
-        setupClocks()
-        await setupCalendars();
-        await setupTodos();
-        await setupStopwatches();
-        setupCarousels();
-        setupKeybinds();
-        setupSearchBoxes();
-        setupCollapsibleLists();
-        setupCollapsibleGrids();
-        setupGroups();
-        setupMasonries();
-        setupDynamicRelativeTime();
-        setupImageFallbacks();
-        setupLazyImages();
-        setupPlayingProgressUpdater();
+        safeSetup("setupPopovers", setupPopovers);
+        safeSetup("setupClocks", setupClocks);
+        await safeSetup("setupCalendars", setupCalendars);
+        await safeSetup("setupTodos", setupTodos);
+        await safeSetup("setupStopwatches", setupStopwatches);
+        safeSetup("setupCarousels", setupCarousels);
+        safeSetup("setupKeybinds", setupKeybinds);
+        safeSetup("setupSearchBoxes", setupSearchBoxes);
+        safeSetup("setupCollapsibleLists", setupCollapsibleLists);
+        safeSetup("setupCollapsibleGrids", setupCollapsibleGrids);
+        safeSetup("setupGroups", setupGroups);
+        safeSetup("setupMasonries", setupMasonries);
+        safeSetup("setupDynamicRelativeTime", setupDynamicRelativeTime);
+        safeSetup("setupImageFallbacks", setupImageFallbacks);
+        safeSetup("setupLazyImages", setupLazyImages);
+        safeSetup("setupPlayingProgressUpdater", setupPlayingProgressUpdater);
     } finally {
         pageElement.classList.add("content-ready");
         pageElement.setAttribute("aria-busy", "false");
